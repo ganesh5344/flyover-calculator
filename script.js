@@ -100,24 +100,7 @@ const formulas = {
 
 const historyStorageKey = "spanlab-calculation-history";
 const themeStorageKey = "spanlab-theme";
-const projectStorageKey = "spanlab-project-brief";
-const checklistStorageKey = "spanlab-project-checklist";
 const maxHistoryItems = 8;
-const defaultProject = {
-    name: "Cable-Stayed Flyover Study",
-    location: "",
-    structure: "Cable-stayed flyover",
-    stage: "concept",
-    span: "",
-    notes: ""
-};
-const projectSteps = ["scope", "site", "loads", "checks", "review"];
-const stageLabels = {
-    concept: "Concept study",
-    preliminary: "Preliminary design",
-    detailed: "Detailed design",
-    review: "Review / submission"
-};
 
 const formulaSelect = document.getElementById("formulaSelect");
 const inputArea = document.getElementById("inputArea");
@@ -132,14 +115,14 @@ const resultDetail = document.getElementById("resultDetail");
 const historyList = document.getElementById("historyList");
 const historyEmpty = document.getElementById("historyEmpty");
 const historyCount = document.getElementById("historyCount");
+const historyMessage = document.getElementById("historyMessage");
+const exportCalculationsButton = document.getElementById("exportCalculationsButton");
 const clearHistoryButton = document.getElementById("clearHistoryButton");
 const themeToggle = document.getElementById("themeToggle");
 const themeLabel = document.getElementById("themeLabel");
 
 let historyItems = loadHistory();
 let latestResult = "";
-let projectData = loadProject();
-let checklistState = loadChecklist();
 
 function showFormula() {
     const formula = formulas[formulaSelect.value];
@@ -244,9 +227,13 @@ function calculate(event) {
         output: formula.output,
         value: formattedValue,
         unit: formula.unit,
-        timestamp: new Date().toISOString()
+        timestamp: new Date().toISOString(),
+        inputs: formula.inputs.map((field) => ({
+            label: field.label,
+            value: values[field.id],
+            unit: field.unit
+        }))
     });
-    historyItems = historyItems.slice(0, maxHistoryItems);
     saveHistory();
     renderHistory();
 }
@@ -269,7 +256,7 @@ function loadHistory() {
     try {
         const saved = localStorage.getItem(historyStorageKey);
         const parsed = saved ? JSON.parse(saved) : [];
-        return Array.isArray(parsed) ? parsed.slice(0, maxHistoryItems) : [];
+        return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
         console.warn("Calculation history could not be loaded.", error);
         return [];
@@ -287,7 +274,7 @@ function saveHistory() {
 
 function renderHistory() {
     historyList.replaceChildren();
-    historyItems.forEach((item) => {
+    historyItems.slice(0, maxHistoryItems).forEach((item) => {
         const formula = formulas[item.formulaId];
         if (!formula) {
             return;
@@ -318,166 +305,60 @@ function renderHistory() {
         historyList.append(entry);
     });
 
-    historyCount.textContent = String(historyList.childElementCount);
-    historyEmpty.hidden = historyList.childElementCount > 0;
-    clearHistoryButton.hidden = historyList.childElementCount === 0;
+    historyCount.textContent = String(historyItems.length);
+    historyEmpty.hidden = historyItems.length > 0;
+    exportCalculationsButton.disabled = historyItems.length === 0;
+    clearHistoryButton.hidden = historyItems.length === 0;
+    historyMessage.textContent = "";
 }
 
-function loadProject() {
-    try {
-        const saved = localStorage.getItem(projectStorageKey);
-        if (!saved) {
-            return { ...defaultProject };
-        }
-
-        const parsed = JSON.parse(saved);
-        if (!parsed || typeof parsed !== "object") {
-            return { ...defaultProject };
-        }
-
-        return {
-            name: typeof parsed.name === "string" ? parsed.name : defaultProject.name,
-            location: typeof parsed.location === "string" ? parsed.location : "",
-            structure: typeof parsed.structure === "string" ? parsed.structure : defaultProject.structure,
-            stage: Object.prototype.hasOwnProperty.call(stageLabels, parsed.stage) ? parsed.stage : defaultProject.stage,
-            span: typeof parsed.span === "string" ? parsed.span : "",
-            notes: typeof parsed.notes === "string" ? parsed.notes : ""
-        };
-    } catch (error) {
-        console.warn("The saved project brief could not be loaded.", error);
-        return { ...defaultProject };
-    }
+function csvCell(value) {
+    const text = value === null || value === undefined ? "" : String(value);
+    return `"${text.replace(/"/g, '""')}"`;
 }
 
-function loadChecklist() {
-    try {
-        const saved = localStorage.getItem(checklistStorageKey);
-        const parsed = saved ? JSON.parse(saved) : {};
-        return Object.fromEntries(projectSteps.map((step) => [step, Boolean(parsed && parsed[step])]));
-    } catch (error) {
-        console.warn("The saved project checklist could not be loaded.", error);
-        return Object.fromEntries(projectSteps.map((step) => [step, false]));
-    }
-}
-
-function showProjectMessage(message, isError) {
-    const projectMessage = document.getElementById("projectMessage");
-    projectMessage.textContent = message;
-    projectMessage.dataset.error = isError ? "true" : "false";
-}
-
-function updateProjectSummary() {
-    document.getElementById("summaryName").textContent = projectData.name || defaultProject.name;
-    document.getElementById("summaryStage").textContent = stageLabels[projectData.stage] || stageLabels.concept;
-    document.getElementById("summaryStructure").textContent = projectData.structure || "Not specified";
-    document.getElementById("summaryLocation").textContent = projectData.location || "Not specified";
-
-    const span = Number(projectData.span);
-    document.getElementById("summarySpan").textContent = projectData.span && Number.isFinite(span)
-        ? `${span.toLocaleString(undefined, { maximumFractionDigits: 2 })} m`
-        : "Not entered";
-}
-
-function populateProjectForm() {
-    document.getElementById("projectName").value = projectData.name;
-    document.getElementById("projectLocation").value = projectData.location;
-    document.getElementById("structureType").value = projectData.structure;
-    document.getElementById("projectStage").value = projectData.stage;
-    document.getElementById("mainSpan").value = projectData.span;
-    document.getElementById("projectNotes").value = projectData.notes;
-    document.querySelectorAll("[data-project-step]").forEach((input) => {
-        input.checked = checklistState[input.dataset.projectStep];
-    });
-    updateProjectSummary();
-    updateChecklistProgress();
-}
-
-function saveProject(event) {
-    event.preventDefault();
-    const name = document.getElementById("projectName").value.trim();
-    const structure = document.getElementById("structureType").value.trim();
-    const spanInput = document.getElementById("mainSpan");
-    const spanText = spanInput.value.trim();
-
-    if (!name || !structure) {
-        showProjectMessage("Enter a project name and structure type.", true);
-        document.getElementById(!name ? "projectName" : "structureType").focus();
+function exportCalculations() {
+    const records = historyItems.filter((item) => item && formulas[item.formulaId]);
+    if (records.length === 0) {
+        historyMessage.textContent = "Complete a calculation before exporting.";
         return;
     }
 
-    if (spanText && (!Number.isFinite(Number(spanText)) || Number(spanText) <= 0)) {
-        showProjectMessage("Main span must be greater than zero, or left blank.", true);
-        spanInput.focus();
-        return;
-    }
-
-    projectData = {
-        name,
-        location: document.getElementById("projectLocation").value.trim(),
-        structure,
-        stage: document.getElementById("projectStage").value,
-        span: spanText,
-        notes: document.getElementById("projectNotes").value.trim()
-    };
+    const rows = [
+        ["Calculated at", "Calculation", "Formula", "Inputs", "Result", "Unit"],
+        ...records.map((item) => {
+            const formula = formulas[item.formulaId];
+            const inputs = Array.isArray(item.inputs)
+                ? item.inputs.map((input) => `${input.label}: ${input.value} ${input.unit}`).join("; ")
+                : "";
+            return [
+                item.timestamp,
+                item.output || formula.output,
+                formula.equation,
+                inputs,
+                item.value,
+                item.unit
+            ];
+        })
+    ];
+    const csv = `\uFEFF${rows.map((row) => row.map(csvCell).join(",")).join("\r\n")}`;
+    const filename = `flyover-calculations-${new Date().toISOString().slice(0, 10)}.csv`;
 
     try {
-        localStorage.setItem(projectStorageKey, JSON.stringify(projectData));
-        showProjectMessage("Project brief saved in this browser.", false);
+        const file = new Blob([csv], { type: "text/csv;charset=utf-8" });
+        const downloadUrl = URL.createObjectURL(file);
+        const link = document.createElement("a");
+        link.href = downloadUrl;
+        link.download = filename;
+        document.body.append(link);
+        link.click();
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
+        historyMessage.textContent = `Exported ${records.length} calculation${records.length === 1 ? "" : "s"} to CSV.`;
     } catch (error) {
-        console.warn("The project brief could not be saved.", error);
-        showProjectMessage("The brief is shown here, but this browser could not save it.", true);
+        console.error("Calculation export failed.", error);
+        historyMessage.textContent = "Could not export calculations. Try a different browser.";
     }
-    updateProjectSummary();
-}
-
-function updateChecklistProgress() {
-    const completed = projectSteps.filter((step) => checklistState[step]).length;
-    const progressTrack = document.querySelector(".progress-track");
-    document.getElementById("progressLabel").textContent = `${completed} of ${projectSteps.length} complete`;
-    document.getElementById("progressBar").style.width = `${(completed / projectSteps.length) * 100}%`;
-    progressTrack.setAttribute("aria-valuenow", String(completed));
-}
-
-function updateChecklist(input) {
-    const step = input.dataset.projectStep;
-    if (!projectSteps.includes(step)) {
-        return;
-    }
-
-    checklistState[step] = input.checked;
-    updateChecklistProgress();
-    try {
-        localStorage.setItem(checklistStorageKey, JSON.stringify(checklistState));
-        showProjectMessage("Checklist progress saved.", false);
-    } catch (error) {
-        console.warn("The checklist progress could not be saved.", error);
-        showProjectMessage("Progress updated, but this browser could not save it.", true);
-    }
-}
-
-function exportProject() {
-    const report = {
-        exportedAt: new Date().toISOString(),
-        project: projectData,
-        checklist: projectSteps.map((step) => ({
-            step,
-            complete: checklistState[step]
-        })),
-        recentCalculations: historyItems
-    };
-    const filename = (projectData.name || "flyover-project")
-        .replace(/[^a-z0-9]+/gi, "-")
-        .replace(/^-|-$/g, "")
-        .toLowerCase() || "flyover-project";
-    const file = new Blob([JSON.stringify(report, null, 2)], { type: "application/json" });
-    const downloadUrl = URL.createObjectURL(file);
-    const link = document.createElement("a");
-    link.href = downloadUrl;
-    link.download = `${filename}-project-brief.json`;
-    document.body.append(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(downloadUrl);
 }
 
 function applyTheme(theme) {
@@ -489,12 +370,7 @@ function applyTheme(theme) {
 
 document.getElementById("calculationForm").addEventListener("submit", calculate);
 formulaSelect.addEventListener("change", showFormula);
-document.getElementById("projectForm").addEventListener("submit", saveProject);
-document.querySelectorAll("[data-project-step]").forEach((input) => {
-    input.addEventListener("change", () => updateChecklist(input));
-});
-document.getElementById("exportProjectButton").addEventListener("click", exportProject);
-document.getElementById("printProjectButton").addEventListener("click", () => window.print());
+exportCalculationsButton.addEventListener("click", exportCalculations);
 
 document.getElementById("resetButton").addEventListener("click", () => {
     calculationForm.reset();
@@ -551,5 +427,4 @@ try {
     console.warn("The saved theme could not be loaded.", error);
     applyTheme("light");
 }
-populateProjectForm();
 renderHistory();

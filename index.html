@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#f3f6fb">
-    <meta name="description" content="An educational cable-stayed flyover project workspace with an editable brief, design checklist, and preliminary calculators.">
-    <title>Cable-Stayed Flyover Project Workspace</title>
+    <meta name="description" content="A cable-stayed flyover calculator for common preliminary structural formula checks.">
+    <title>Flyover Engineering Calculator</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -18,11 +18,9 @@
                 <span class="brand-mark" aria-hidden="true">S</span>
                 <span>Span<span class="brand-light">Lab</span></span>
             </a>
-            <nav class="primary-nav" aria-label="Project navigation">
-                <a href="#project-overview">Overview</a>
-                <a href="#project-setup">Project brief</a>
-                <a href="#design-checklist">Checklist</a>
-                <a href="#calculator">Calculations</a>
+            <nav class="primary-nav" aria-label="Calculator navigation">
+                <a href="#calculator">Calculator</a>
+                <a href="#history">History</a>
             </nav>
             <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme">
                 <span class="theme-icon" aria-hidden="true">◐</span>
@@ -33,9 +31,9 @@
         <main>
             <section class="intro">
                 <div class="intro-copy">
-                    <p class="eyebrow"><span class="eyebrow-dot"></span> CIVIL ENGINEERING PROJECT WORKSPACE</p>
-                    <h1>Cable-stayed <span>flyover.</span></h1>
-                    <p class="intro-text">Organize the project brief, track your design workflow, and record preliminary structural calculations in one place.</p>
+                    <p class="eyebrow"><span class="eyebrow-dot"></span> CIVIL ENGINEERING TOOLKIT</p>
+                    <h1>Flyover <span>calculator.</span></h1>
+                    <p class="intro-text">Run preliminary structural checks, review recent results, and export your completed calculations.</p>
                 </div>
                 <div class="hero-image-wrap">
                     <svg class="bridge-illustration" viewBox="0 0 800 360" role="img" aria-labelledby="bridgeArtTitle bridgeArtDescription" preserveAspectRatio="xMidYMid slice">
@@ -116,140 +114,6 @@
                 </div>
             </section>
 
-            <section class="project-overview section-block" id="project-overview" aria-labelledby="projectOverviewHeading">
-                <div class="section-title-row">
-                    <div>
-                        <p class="section-kicker">PROJECT OVERVIEW</p>
-                        <h2 id="projectOverviewHeading"><span id="summaryName">Cable-Stayed Flyover Study</span></h2>
-                    </div>
-                    <div class="overview-actions">
-                        <button class="button button-secondary" id="exportProjectButton" type="button">Export brief</button>
-                        <button class="button button-secondary" id="printProjectButton" type="button">Print overview</button>
-                    </div>
-                </div>
-                <div class="summary-grid">
-                    <article class="summary-card">
-                        <span class="summary-label">DESIGN STAGE</span>
-                        <strong id="summaryStage">Concept study</strong>
-                    </article>
-                    <article class="summary-card">
-                        <span class="summary-label">STRUCTURE TYPE</span>
-                        <strong id="summaryStructure">Cable-stayed flyover</strong>
-                    </article>
-                    <article class="summary-card">
-                        <span class="summary-label">PROJECT LOCATION</span>
-                        <strong id="summaryLocation">Not specified</strong>
-                    </article>
-                    <article class="summary-card">
-                        <span class="summary-label">MAIN SPAN</span>
-                        <strong id="summarySpan">Not entered</strong>
-                    </article>
-                </div>
-            </section>
-
-            <div class="project-workgrid">
-                <section class="panel project-setup-panel" id="project-setup" aria-labelledby="projectSetupHeading">
-                    <div class="panel-heading">
-                        <div>
-                            <p class="section-kicker">PROJECT BRIEF</p>
-                            <h2 id="projectSetupHeading">Set up your study</h2>
-                        </div>
-                        <span class="step-badge">7 <span>FORMULAS</span></span>
-                    </div>
-                    <p class="panel-intro">Add your own project details. They are saved in this browser on this device.</p>
-                    <form id="projectForm" novalidate>
-                        <div class="project-fields">
-                            <div class="field-group">
-                                <label for="projectName">Project name</label>
-                                <input class="text-input" id="projectName" name="projectName" maxlength="80" required>
-                            </div>
-                            <div class="field-group">
-                                <label for="projectLocation">Location / site</label>
-                                <input class="text-input" id="projectLocation" name="projectLocation" maxlength="100" placeholder="Add site or city">
-                            </div>
-                            <div class="field-group">
-                                <label for="structureType">Structure type</label>
-                                <input class="text-input" id="structureType" name="structureType" maxlength="80" required>
-                            </div>
-                            <div class="field-group">
-                                <label for="projectStage">Design stage</label>
-                                <div class="select-wrap">
-                                    <select id="projectStage" name="projectStage">
-                                        <option value="concept">Concept study</option>
-                                        <option value="preliminary">Preliminary design</option>
-                                        <option value="detailed">Detailed design</option>
-                                        <option value="review">Review / submission</option>
-                                    </select>
-                                    <span class="select-chevron" aria-hidden="true">⌄</span>
-                                </div>
-                            </div>
-                            <div class="field-group">
-                                <label for="mainSpan">Main span (optional)</label>
-                                <div class="input-wrap">
-                                    <input id="mainSpan" name="mainSpan" type="number" min="0" step="any" placeholder="Enter your project value">
-                                    <span class="input-unit">m</span>
-                                </div>
-                            </div>
-                            <div class="field-group project-notes-field">
-                                <label for="projectNotes">Scope, objectives & assumptions</label>
-                                <textarea class="text-input project-notes" id="projectNotes" name="projectNotes" maxlength="1200" placeholder="Describe the purpose of your study, known site constraints, and assumptions to verify."></textarea>
-                            </div>
-                        </div>
-                        <div class="project-form-footer">
-                            <button class="button button-primary" type="submit">Save project brief <span aria-hidden="true">↗</span></button>
-                            <p class="project-message" id="projectMessage" role="status" aria-live="polite"></p>
-                        </div>
-                    </form>
-                </section>
-
-                <section class="panel checklist-panel" id="design-checklist" aria-labelledby="checklistHeading">
-                    <div class="panel-heading">
-                        <div>
-                            <p class="section-kicker">DESIGN WORKFLOW</p>
-                            <h2 id="checklistHeading">Project checklist</h2>
-                        </div>
-                        <span class="step-badge">02 <span>/ 02</span></span>
-                    </div>
-                    <p class="panel-intro">Track the study steps as you complete them. This checklist is a planning aid, not a design approval.</p>
-                    <div class="progress-summary">
-                        <div class="progress-copy">
-                            <span>Study progress</span>
-                            <strong id="progressLabel">0 of 5 complete</strong>
-                        </div>
-                        <div class="progress-track" role="progressbar" aria-label="Project checklist progress" aria-valuemin="0" aria-valuemax="5" aria-valuenow="0">
-                            <span id="progressBar"></span>
-                        </div>
-                    </div>
-                    <div class="checklist-items">
-                        <label class="checklist-item">
-                            <input type="checkbox" data-project-step="scope">
-                            <span class="checkmark" aria-hidden="true"></span>
-                            <span><strong>Define project scope</strong><small>Purpose, requirements, and limits</small></span>
-                        </label>
-                        <label class="checklist-item">
-                            <input type="checkbox" data-project-step="site">
-                            <span class="checkmark" aria-hidden="true"></span>
-                            <span><strong>Collect site information</strong><small>Survey, geotechnical, and constraints</small></span>
-                        </label>
-                        <label class="checklist-item">
-                            <input type="checkbox" data-project-step="loads">
-                            <span class="checkmark" aria-hidden="true"></span>
-                            <span><strong>Document materials and loads</strong><small>Record sources, units, and assumptions</small></span>
-                        </label>
-                        <label class="checklist-item">
-                            <input type="checkbox" data-project-step="checks">
-                            <span class="checkmark" aria-hidden="true"></span>
-                            <span><strong>Run preliminary calculations</strong><small>Use the calculator below for study checks</small></span>
-                        </label>
-                        <label class="checklist-item">
-                            <input type="checkbox" data-project-step="review">
-                            <span class="checkmark" aria-hidden="true"></span>
-                            <span><strong>Plan an independent review</strong><small>Check applicable standards with an engineer</small></span>
-                        </label>
-                    </div>
-                </section>
-            </div>
-
             <div class="workspace-grid section-block" id="calculator">
                 <section class="panel calculator-panel" aria-labelledby="calculatorHeading">
                     <div class="panel-heading">
@@ -257,7 +121,7 @@
                             <p class="section-kicker">PRELIMINARY DESIGN CHECKS</p>
                             <h2 id="calculatorHeading">Run a calculation</h2>
                         </div>
-                        <span class="step-badge">01 <span>/ 02</span></span>
+                        <span class="step-badge">7 <span>FORMULAS</span></span>
                     </div>
 
                     <div class="field-group">
@@ -307,21 +171,25 @@
                     </section>
                 </section>
 
-                <aside class="panel history-panel" aria-labelledby="historyHeading">
+                <aside class="panel history-panel" id="history" aria-labelledby="historyHeading">
                     <div class="panel-heading">
                         <div>
-                            <p class="section-kicker">YOUR WORKSPACE</p>
+                            <p class="section-kicker">CALCULATION LOG</p>
                             <h2 id="historyHeading">Recent results</h2>
                         </div>
                         <span class="history-count" id="historyCount">0</span>
                     </div>
-                    <p class="history-description">Your latest calculations are saved on this device.</p>
+                    <p class="history-description">Your latest calculations are saved on this device. Export the complete saved log as a CSV spreadsheet.</p>
+                    <div class="history-actions">
+                        <button class="button button-secondary export-calculations-button" id="exportCalculationsButton" type="button" disabled>Export calculations (.csv)</button>
+                        <button class="clear-history" id="clearHistoryButton" type="button" hidden>Clear history</button>
+                    </div>
+                    <p class="history-message" id="historyMessage" role="status" aria-live="polite"></p>
                     <div class="history-list" id="historyList" aria-live="polite"></div>
-                    <button class="clear-history" id="clearHistoryButton" type="button" hidden>Clear history</button>
                     <div class="history-empty" id="historyEmpty">
                         <span class="empty-icon" aria-hidden="true">↗</span>
                         <p>No calculations yet</p>
-                        <span>Your results will show up here.</span>
+                        <span>Complete a calculation to start your log.</span>
                     </div>
                 </aside>
             </div>

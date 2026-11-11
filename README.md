@@ -1,13 +1,13 @@
-# Cable-Stayed Flyover Project Workspace
+# Cable-Stayed Flyover Calculator
 
-A lightweight, browser-based workspace for organizing a flyover study. It combines an editable project brief, a design workflow checklist, and a set of preliminary structural formula calculators.
+A lightweight browser calculator for common preliminary structural formula checks.
 
 ## Features
 
-- Save a project name, site, structure type, design stage, span, and study notes in the current browser.
-- Track study tasks with a locally saved checklist.
 - Calculate wind pressure, cable force, bending moment, shear force, average normal stress, dead load, and beam deflection.
-- Keep recent results in the browser, switch themes, print the overview, or export the saved brief and calculations as JSON.
+- Review the eight most recent results while retaining the complete calculation log in the browser.
+- Export the saved calculation log as a CSV spreadsheet, including formulas, input values, units, timestamps, and results.
+- Switch between light and dark themes.
 - Use a responsive cable-stayed bridge illustration embedded directly in the page.
 
 ## Run locally
@@ -26,7 +26,7 @@ Enter values using the units shown beside each field. The formulas are simplifie
 - Dead load: `DL = γ × volume`.
 - Beam deflection: `δ = 5wL⁴ / (384EI)`, for a simply supported beam with uniform load.
 
-The project brief and checklist are stored in the browser's local storage; they are not synchronized to GitHub or another device. Use **Export brief** to download a JSON copy.
+Calculation history is stored in the current browser's local storage and is not synchronized to GitHub or another device. Export the CSV to keep or share a copy.
 
 ## Safety note
 
