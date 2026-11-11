@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3f6fb">
+    <meta name="description" content="A simple civil engineering calculator for common cable-stayed flyover formulas.">
+    <title>Flyover Engineering Calculator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <a class="brand" href="#" aria-label="SpanLab home">
+                <span class="brand-mark" aria-hidden="true">S</span>
+                <span>Span<span class="brand-light">Lab</span></span>
+            </a>
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme">
+                <span class="theme-icon" aria-hidden="true">◐</span>
+                <span id="themeLabel">Dark mode</span>
+            </button>
+        </header>
+
+        <main>
+            <section class="intro">
+                <div class="intro-copy">
+                    <p class="eyebrow"><span class="eyebrow-dot"></span> CIVIL ENGINEERING TOOLKIT</p>
+                    <h1>Flyover <span>calculator.</span></h1>
+                    <p class="intro-text">Quick checks for common bridge and structural engineering formulas.</p>
+                </div>
+                <div class="hero-image-wrap">
+                    <svg class="bridge-illustration" viewBox="0 0 800 360" role="img" aria-labelledby="bridgeArtTitle bridgeArtDescription" preserveAspectRatio="xMidYMid slice">
+                        <title id="bridgeArtTitle">Cable-stayed bridge illustration</title>
+                        <desc id="bridgeArtDescription">A modern cable-stayed bridge with twin pylons, fan-shaped cables, a city skyline, and reflections on the water.</desc>
+                        <defs>
+                            <linearGradient id="bridgeSky" x1="0" y1="0" x2="1" y2="1">
+                                <stop offset="0" stop-color="#122d42"/>
+                                <stop offset=".58" stop-color="#206b75"/>
+                                <stop offset="1" stop-color="#8bc7ad"/>
+                            </linearGradient>
+                            <linearGradient id="bridgeWater" x1="0" y1="0" x2="0" y2="1">
+                                <stop stop-color="#1b5966"/>
+                                <stop offset="1" stop-color="#122d42"/>
+                            </linearGradient>
+                            <linearGradient id="bridgeDeck" x1="0" y1="0" x2="1" y2="0">
+                                <stop stop-color="#d8e7dd"/>
+                                <stop offset=".5" stop-color="#ffffff"/>
+                                <stop offset="1" stop-color="#b5d8ce"/>
+                            </linearGradient>
+                            <radialGradient id="bridgeGlow">
+                                <stop stop-color="#d4f1c8" stop-opacity=".85"/>
+                                <stop offset="1" stop-color="#d4f1c8" stop-opacity="0"/>
+                            </radialGradient>
+                            <pattern id="bridgeGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+                                <path d="M32 0H0V32" fill="none" stroke="#d4f1e7" stroke-opacity=".09" stroke-width="1"/>
+                            </pattern>
+                        </defs>
+                        <rect width="800" height="360" fill="url(#bridgeSky)"/>
+                        <rect width="800" height="260" fill="url(#bridgeGrid)"/>
+                        <circle cx="672" cy="78" r="115" fill="url(#bridgeGlow)"/>
+                        <circle cx="672" cy="78" r="29" fill="#e1f4ce" fill-opacity=".72"/>
+                        <path d="M0 203 89 177l52 17 70-35 77 30 88-26 72 26 74-42 85 39 72-20 121 36v40H0Z" fill="#204b57" fill-opacity=".43"/>
+                        <g fill="#183c4c" fill-opacity=".78">
+                            <path d="M22 182h31v55H22zm38-24h46v79H60zm56 38h36v41h-36zm49-30h54v71h-54zm64 22h39v49h-39zm411-28h38v77h-38zm47 20h54v57h-54zm64-34h32v91h-32zm43 28h54v63h-54z"/>
+                        </g>
+                        <g fill="#acd1bc" fill-opacity=".65">
+                            <path d="M72 172h6v9h-6zm14 0h6v9h-6zm-14 16h6v9h-6zm14 0h6v9h-6zm48 5h6v8h-6zm-25-37h6v9h-6zm15 0h6v9h-6zm15 0h6v9h-6zm-15 17h6v9h-6zm15 0h6v9h-6zm508-4h6v9h-6zm15 0h6v9h-6zm-15 17h6v9h-6zm15 0h6v9h-6zm90-46h6v9h-6zm15 0h6v9h-6zm-15 17h6v9h-6zm15 0h6v9h-6z"/>
+                        </g>
+                        <path d="M0 237h800v123H0z" fill="url(#bridgeWater)"/>
+                        <path d="M0 238c120-9 216 4 321-1 116-6 236-8 479 2" fill="none" stroke="#bbdfd1" stroke-opacity=".58" stroke-width="2"/>
+                        <g fill="none" stroke="#a9d8c8" stroke-linecap="round" stroke-opacity=".2">
+                            <path d="M27 268h138m24 0h67m61 0h122m28 0h80m45 0h154" stroke-width="2"/>
+                            <path d="M83 288h80m46 0h119m33 0h88m46 0h69m39 0h137" stroke-width="1.5"/>
+                            <path d="M16 318h112m35 0h78m52 0h128m46 0h83m46 0h145" stroke-width="2"/>
+                            <path d="M198 248h110m218 0h110" stroke-width="3"/>
+                        </g>
+                        <g fill="none" stroke="#bce9d9" stroke-opacity=".82" stroke-width="1.7">
+                            <path d="M300 55 142 201M300 55 172 201M300 55 202 201M300 55 232 201M300 55 262 201"/>
+                            <path d="M300 55 340 201M300 55 370 201M300 55 400 201M300 55 430 201M300 55 460 201"/>
+                            <path d="M510 68 358 201M510 68 388 201M510 68 418 201M510 68 448 201M510 68 478 201"/>
+                            <path d="M510 68 548 201M510 68 578 201M510 68 608 201M510 68 638 201M510 68 668 201"/>
+                        </g>
+                        <g fill="none" stroke="#e6f4df" stroke-linecap="round">
+                            <path d="M286 210V59h28v151" stroke-width="8"/>
+                            <path d="M496 210V72h28v138" stroke-width="8"/>
+                            <path d="M298 72h4m206 14h4" stroke-width="3"/>
+                        </g>
+                        <path d="M20 207h760v13H20z" fill="url(#bridgeDeck)"/>
+                        <path d="M20 205h760" stroke="#f4ffed" stroke-width="2"/>
+                        <path d="M20 222h760" stroke="#b1d5ca" stroke-width="3"/>
+                        <g fill="#e5f4e3">
+                            <path d="M104 198h43l10 7h-62z" opacity=".92"/>
+                            <path d="M591 198h43l10 7h-62z" opacity=".72"/>
+                        </g>
+                        <g fill="#173c4a">
+                            <circle cx="116" cy="206" r="2.5"/><circle cx="140" cy="206" r="2.5"/>
+                            <circle cx="603" cy="206" r="2.5"/><circle cx="627" cy="206" r="2.5"/>
+                        </g>
+                        <path d="M286 221v25m28-25v20m182-20v20m28-20v25" stroke="#9bc9bd" stroke-opacity=".55" stroke-width="3"/>
+                        <g font-family="Arial, sans-serif" font-size="9" font-weight="700" letter-spacing="1.2" fill="#e6f4df" fill-opacity=".82">
+                            <text x="298" y="46" text-anchor="middle">P1</text>
+                            <text x="510" y="59" text-anchor="middle">P2</text>
+                            <text x="400" y="194" text-anchor="middle">MAIN SPAN</text>
+                        </g>
+                    </svg>
+                    <span class="image-caption"><span class="status-dot"></span> CABLE-STAYED / SPAN STUDY</span>
+                </div>
+            </section>
+
+            <div class="workspace-grid">
+                <section class="panel calculator-panel" aria-labelledby="calculatorHeading">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="section-kicker">CALCULATOR</p>
+                            <h2 id="calculatorHeading">Run a calculation</h2>
+                        </div>
+                        <span class="step-badge">01 <span>/ 02</span></span>
+                    </div>
+
+                    <div class="field-group">
+                        <label for="formulaSelect">Choose a formula</label>
+                        <div class="select-wrap">
+                            <select id="formulaSelect">
+                                <option value="">Select a calculation</option>
+                                <option value="wind">Wind load</option>
+                                <option value="cable">Cable tension</option>
+                                <option value="bending">Bending moment</option>
+                                <option value="shear">Shear force</option>
+                                <option value="stress">Normal stress</option>
+                                <option value="deadload">Dead load</option>
+                                <option value="deflection">Beam deflection</option>
+                            </select>
+                            <span class="select-chevron" aria-hidden="true">⌄</span>
+                        </div>
+                    </div>
+
+                    <div class="formula-card" id="formulaText" aria-live="polite">
+                        <span class="formula-icon" aria-hidden="true">ƒx</span>
+                        <div>
+                            <p class="formula-title">Your formula will appear here</p>
+                            <p class="formula-equation">Choose a calculation to get started</p>
+                        </div>
+                    </div>
+
+                    <form id="calculationForm" novalidate>
+                        <div id="inputArea" class="input-grid"></div>
+                        <p class="form-message" id="formMessage" role="alert" hidden></p>
+                        <div class="form-actions">
+                            <button class="button button-primary" type="submit">
+                                Calculate <span aria-hidden="true">↗</span>
+                            </button>
+                            <button class="button button-secondary" id="resetButton" type="button">Reset fields</button>
+                        </div>
+                    </form>
+
+                    <section class="result-card" id="result" aria-live="polite" aria-label="Calculation result" hidden>
+                        <div class="result-topline">
+                            <span class="result-label">YOUR RESULT</span>
+                            <button class="copy-button" id="copyButton" type="button">Copy result</button>
+                        </div>
+                        <p class="result-name" id="resultName"></p>
+                        <p class="result-value"><span id="resultValue"></span> <span class="result-unit" id="resultUnit"></span></p>
+                        <p class="result-detail" id="resultDetail"></p>
+                    </section>
+                </section>
+
+                <aside class="panel history-panel" aria-labelledby="historyHeading">
+                    <div class="panel-heading">
+                        <div>
+                            <p class="section-kicker">YOUR WORKSPACE</p>
+                            <h2 id="historyHeading">Recent results</h2>
+                        </div>
+                        <span class="history-count" id="historyCount">0</span>
+                    </div>
+                    <p class="history-description">Your latest calculations are saved on this device.</p>
+                    <div class="history-list" id="historyList" aria-live="polite"></div>
+                    <button class="clear-history" id="clearHistoryButton" type="button" hidden>Clear history</button>
+                    <div class="history-empty" id="historyEmpty">
+                        <span class="empty-icon" aria-hidden="true">↗</span>
+                        <p>No calculations yet</p>
+                        <span>Your results will show up here.</span>
+                    </div>
+                </aside>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <span>SPANLAB <span class="footer-separator">/</span> CIVIL ENGINEERING</span>
+            <span>For learning and preliminary checks only — verify designs with applicable codes and a qualified engineer.</span>
+        </footer>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
