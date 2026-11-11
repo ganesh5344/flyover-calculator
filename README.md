@@ -1,14 +1,19 @@
-# Cable-Stayed Flyover Calculator
+# SpanLab Flyover Calculator
 
-A lightweight browser calculator for common preliminary structural formula checks.
+A lightweight browser workspace for exploring common preliminary cable-stayed flyover formulas.
+
+## Pages
+
+- `index.html` — home page with links to the calculator and saved work.
+- `calculator.html` — grouped load and structural-response formulas.
+- `history.html` — searchable calculation history with CSV export.
 
 ## Features
 
 - Calculate wind pressure, cable force, bending moment, shear force, average normal stress, dead load, and beam deflection.
-- Review the eight most recent results while retaining the complete calculation log in the browser.
-- Export the saved calculation log as a CSV spreadsheet, including formulas, input values, units, timestamps, and results.
-- Switch between light and dark themes.
-- Use a responsive cable-stayed bridge illustration embedded directly in the page.
+- Review every saved calculation, filter by formula, and export timestamps, formulas, inputs, units, and results as CSV.
+- Share calculation history and theme preference between pages in the same browser.
+- Responsive layouts and an embedded cable-stayed bridge illustration.
 
 ## Run locally
 
@@ -16,7 +21,7 @@ Open `index.html` in a modern browser. No package installation or server is requ
 
 ## Calculator assumptions
 
-Enter values using the units shown beside each field. The formulas are simplified educational checks, not a complete bridge-design method:
+Enter values using the units shown beside each field. These formulas are simplified educational checks, not a complete bridge-design method:
 
 - Wind pressure: `P = 0.6 × V²`, with wind speed in m/s.
 - Cable force: `H = wL² / (8d)`, using a parabolic cable approximation under uniform load.
@@ -26,7 +31,7 @@ Enter values using the units shown beside each field. The formulas are simplifie
 - Dead load: `DL = γ × volume`.
 - Beam deflection: `δ = 5wL⁴ / (384EI)`, for a simply supported beam with uniform load.
 
-Calculation history is stored in the current browser's local storage and is not synchronized to GitHub or another device. Use **Export calculations (.csv)** to download a spreadsheet containing the calculation timestamp, formula, inputs, units, and result. If the history is empty, the export button explains that a calculation is needed first.
+Calculation history is stored in this browser's local storage. It is not synchronized to GitHub or another device. CSV exports are downloaded to the browser's Downloads folder.
 
 ## Safety note
 

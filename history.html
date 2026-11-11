@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#f3f6fb">
+    <meta name="description" content="Review, filter, and export your saved flyover calculations.">
+    <title>History &amp; export | SpanLab</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-shell">
+        <header class="topbar">
+            <a class="brand" href="index.html" aria-label="SpanLab home">
+                <span class="brand-mark" aria-hidden="true">S</span>
+                <span>Span<span class="brand-light">Lab</span></span>
+            </a>
+            <nav class="primary-nav" aria-label="Main navigation">
+                <a href="index.html">Home</a>
+                <a href="calculator.html">Calculator</a>
+                <a href="history.html" aria-current="page">History &amp; export</a>
+            </nav>
+            <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme">
+                <span class="theme-icon" aria-hidden="true">◐</span>
+                <span id="themeLabel">Dark mode</span>
+            </button>
+        </header>
+
+        <main class="page-main">
+            <section class="page-heading">
+                <p class="eyebrow"><span class="eyebrow-dot"></span> YOUR SAVED WORK</p>
+                <h1>Calculation <span>history.</span></h1>
+                <p class="intro-text">Review every calculation saved in this browser, search the log, and export a spreadsheet with formulas, input values, units, and results.</p>
+            </section>
+
+            <section class="panel full-history-panel" aria-labelledby="historyHeading">
+                <div class="history-page-heading">
+                    <div>
+                        <p class="section-kicker">CALCULATION LOG</p>
+                        <h2 id="historyHeading">All calculations <span class="history-count" id="historyCount">0</span></h2>
+                    </div>
+                    <div class="history-page-actions">
+                        <button class="button button-primary" id="exportCalculationsButton" type="button">Export CSV <span aria-hidden="true">↓</span></button>
+                        <button class="button button-secondary" id="clearHistoryButton" type="button">Clear history</button>
+                    </div>
+                </div>
+
+                <div class="history-filters">
+                    <label class="search-field">
+                        <span class="visually-hidden">Search calculations</span>
+                        <span aria-hidden="true">⌕</span>
+                        <input id="historySearch" type="search" placeholder="Search formulas, inputs, or results">
+                    </label>
+                    <div class="select-wrap history-filter-select">
+                        <label class="visually-hidden" for="historyFilter">Filter by formula</label>
+                        <select id="historyFilter">
+                            <option value="">All formulas</option>
+                        </select>
+                        <span class="select-chevron" aria-hidden="true">⌄</span>
+                    </div>
+                </div>
+
+                <p class="history-message" id="historyMessage" role="status" aria-live="polite"></p>
+
+                <div class="history-table-wrap">
+                    <table class="history-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Date</th>
+                                <th scope="col">Calculation</th>
+                                <th scope="col">Inputs</th>
+                                <th scope="col">Result</th>
+                            </tr>
+                        </thead>
+                        <tbody id="historyTableBody"></tbody>
+                    </table>
+                </div>
+
+                <div class="history-empty" id="historyEmpty" hidden>
+                    <span class="empty-icon" aria-hidden="true">↗</span>
+                    <p id="historyEmptyTitle">No calculations yet</p>
+                    <span id="historyEmptyDescription">Run a calculation to start building your history.</span>
+                    <a class="button button-primary empty-action" href="calculator.html">Open calculator <span aria-hidden="true">→</span></a>
+                </div>
+                <p class="history-storage-note">History is saved in this browser on this device. CSV exports are downloaded to your browser’s Downloads folder.</p>
+            </section>
+        </main>
+
+        <footer class="footer">
+            <span>SPANLAB <span class="footer-separator">/</span> CIVIL ENGINEERING</span>
+            <span>For learning and preliminary checks only — verify designs with applicable codes and a qualified engineer.</span>
+        </footer>
+    </div>
+    <script src="formulas.js"></script>
+    <script src="site.js"></script>
+    <script src="history.js"></script>
+</body>
+</html>

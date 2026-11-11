@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="theme-color" content="#f3f6fb">
-    <meta name="description" content="A cable-stayed flyover calculator for common preliminary structural formula checks.">
-    <title>Flyover Engineering Calculator</title>
+    <meta name="description" content="SpanLab is a simple workspace for preliminary cable-stayed flyover calculations and saved results.">
+    <title>SpanLab | Flyover engineering workspace</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
@@ -14,13 +14,14 @@
 <body>
     <div class="app-shell">
         <header class="topbar">
-            <a class="brand" href="#" aria-label="SpanLab home">
+            <a class="brand" href="index.html" aria-label="SpanLab home">
                 <span class="brand-mark" aria-hidden="true">S</span>
                 <span>Span<span class="brand-light">Lab</span></span>
             </a>
-            <nav class="primary-nav" aria-label="Calculator navigation">
-                <a href="#calculator">Calculator</a>
-                <a href="#history">History</a>
+            <nav class="primary-nav" aria-label="Main navigation">
+                <a href="index.html" aria-current="page">Home</a>
+                <a href="calculator.html">Calculator</a>
+                <a href="history.html">History &amp; export</a>
             </nav>
             <button class="theme-toggle" id="themeToggle" type="button" aria-label="Switch to dark theme">
                 <span class="theme-icon" aria-hidden="true">◐</span>
@@ -28,171 +29,143 @@
             </button>
         </header>
 
-        <main>
-            <section class="intro">
-                <div class="intro-copy">
+        <main class="home-main">
+            <section class="home-hero">
+                <div class="home-hero-copy">
                     <p class="eyebrow"><span class="eyebrow-dot"></span> CIVIL ENGINEERING TOOLKIT</p>
-                    <h1>Flyover <span>calculator.</span></h1>
-                    <p class="intro-text">Run preliminary structural checks, review recent results, and export your completed calculations.</p>
+                    <h1>Better structure.<br><span>Clearer calculations.</span></h1>
+                    <p class="intro-text">A focused workspace for exploring preliminary flyover formulas, keeping your calculation log, and exporting results when you need them.</p>
+                    <div class="home-hero-actions">
+                        <a class="button button-primary" href="calculator.html">Open calculator <span aria-hidden="true">↗</span></a>
+                        <a class="text-link" href="history.html">View calculation history <span aria-hidden="true">→</span></a>
+                    </div>
+                    <div class="home-stat-row">
+                        <div class="home-stat">
+                            <strong>07</strong>
+                            <span>FORMULAS</span>
+                        </div>
+                        <div class="home-stat-divider" aria-hidden="true"></div>
+                        <div class="home-stat">
+                            <strong id="homeHistoryCount">0</strong>
+                            <span>SAVED CALCULATIONS</span>
+                        </div>
+                        <div class="home-stat-divider" aria-hidden="true"></div>
+                        <div class="home-stat">
+                            <strong>CSV</strong>
+                            <span>EXPORT FORMAT</span>
+                        </div>
+                    </div>
                 </div>
-                <div class="hero-image-wrap">
-                    <svg class="bridge-illustration" viewBox="0 0 800 360" role="img" aria-labelledby="bridgeArtTitle bridgeArtDescription" preserveAspectRatio="xMidYMid slice">
-                        <title id="bridgeArtTitle">Cable-stayed bridge illustration</title>
-                        <desc id="bridgeArtDescription">A modern cable-stayed bridge with twin pylons, fan-shaped cables, a city skyline, and reflections on the water.</desc>
+                <div class="home-visual">
+                    <div class="home-visual-label"><span class="status-dot"></span> SPAN STUDY / 01</div>
+                    <svg class="home-bridge-art" viewBox="0 0 760 480" role="img" aria-labelledby="homeBridgeTitle homeBridgeDescription">
+                        <title id="homeBridgeTitle">Cable-stayed bridge study illustration</title>
+                        <desc id="homeBridgeDescription">Twin bridge pylons and fan-shaped cables span above water, with a soft architectural grid in the background.</desc>
                         <defs>
-                            <linearGradient id="bridgeSky" x1="0" y1="0" x2="1" y2="1">
-                                <stop offset="0" stop-color="#122d42"/>
-                                <stop offset=".58" stop-color="#206b75"/>
-                                <stop offset="1" stop-color="#8bc7ad"/>
+                            <linearGradient id="homeSky" x1="0" y1="0" x2="1" y2="1">
+                                <stop stop-color="#17374b"/>
+                                <stop offset=".58" stop-color="#236e73"/>
+                                <stop offset="1" stop-color="#8ec4a9"/>
                             </linearGradient>
-                            <linearGradient id="bridgeWater" x1="0" y1="0" x2="0" y2="1">
-                                <stop stop-color="#1b5966"/>
-                                <stop offset="1" stop-color="#122d42"/>
+                            <linearGradient id="homeRiver" x1="0" y1="0" x2="0" y2="1">
+                                <stop stop-color="#286b73"/>
+                                <stop offset="1" stop-color="#152e43"/>
                             </linearGradient>
-                            <linearGradient id="bridgeDeck" x1="0" y1="0" x2="1" y2="0">
-                                <stop stop-color="#d8e7dd"/>
-                                <stop offset=".5" stop-color="#ffffff"/>
-                                <stop offset="1" stop-color="#b5d8ce"/>
-                            </linearGradient>
-                            <radialGradient id="bridgeGlow">
-                                <stop stop-color="#d4f1c8" stop-opacity=".85"/>
-                                <stop offset="1" stop-color="#d4f1c8" stop-opacity="0"/>
-                            </radialGradient>
-                            <pattern id="bridgeGrid" width="32" height="32" patternUnits="userSpaceOnUse">
-                                <path d="M32 0H0V32" fill="none" stroke="#d4f1e7" stroke-opacity=".09" stroke-width="1"/>
+                            <pattern id="homeGrid" width="38" height="38" patternUnits="userSpaceOnUse">
+                                <path d="M38 0H0V38" fill="none" stroke="#e0f3e8" stroke-opacity=".1"/>
                             </pattern>
+                            <radialGradient id="homeSun">
+                                <stop stop-color="#e1f4c9" stop-opacity=".85"/>
+                                <stop offset="1" stop-color="#e1f4c9" stop-opacity="0"/>
+                            </radialGradient>
                         </defs>
-                        <rect width="800" height="360" fill="url(#bridgeSky)"/>
-                        <rect width="800" height="260" fill="url(#bridgeGrid)"/>
-                        <circle cx="672" cy="78" r="115" fill="url(#bridgeGlow)"/>
-                        <circle cx="672" cy="78" r="29" fill="#e1f4ce" fill-opacity=".72"/>
-                        <path d="M0 203 89 177l52 17 70-35 77 30 88-26 72 26 74-42 85 39 72-20 121 36v40H0Z" fill="#204b57" fill-opacity=".43"/>
-                        <g fill="#183c4c" fill-opacity=".78">
-                            <path d="M22 182h31v55H22zm38-24h46v79H60zm56 38h36v41h-36zm49-30h54v71h-54zm64 22h39v49h-39zm411-28h38v77h-38zm47 20h54v57h-54zm64-34h32v91h-32zm43 28h54v63h-54z"/>
+                        <rect width="760" height="480" rx="18" fill="url(#homeSky)"/>
+                        <rect width="760" height="315" fill="url(#homeGrid)"/>
+                        <circle cx="615" cy="93" r="115" fill="url(#homeSun)"/>
+                        <circle cx="615" cy="93" r="25" fill="#e1f4c9" fill-opacity=".72"/>
+                        <path d="M0 281 95 241l72 32 91-58 92 50 86-47 83 52 95-63 146 67v74H0Z" fill="#153d4e" fill-opacity=".58"/>
+                        <g fill="#bce9d9" fill-opacity=".8" stroke="#ecf6df" stroke-width="8" stroke-linecap="round">
+                            <path d="M255 297V91m-20 206h40M491 297V112m-20 185h40"/>
                         </g>
-                        <g fill="#acd1bc" fill-opacity=".65">
-                            <path d="M72 172h6v9h-6zm14 0h6v9h-6zm-14 16h6v9h-6zm14 0h6v9h-6zm48 5h6v8h-6zm-25-37h6v9h-6zm15 0h6v9h-6zm15 0h6v9h-6zm-15 17h6v9h-6zm15 0h6v9h-6zm508-4h6v9h-6zm15 0h6v9h-6zm-15 17h6v9h-6zm15 0h6v9h-6zm90-46h6v9h-6zm15 0h6v9h-6zm-15 17h6v9h-6zm15 0h6v9h-6z"/>
+                        <g fill="none" stroke="#bce9d9" stroke-opacity=".8" stroke-width="2">
+                            <path d="M255 94 90 284M255 94 125 284M255 94 160 284M255 94 195 284M255 94 230 284"/>
+                            <path d="M255 94 300 284M255 94 335 284M255 94 370 284M255 94 405 284"/>
+                            <path d="M491 115 355 284M491 115 390 284M491 115 425 284M491 115 460 284"/>
+                            <path d="M491 115 530 284M491 115 565 284M491 115 600 284M491 115 635 284M491 115 670 284"/>
                         </g>
-                        <path d="M0 237h800v123H0z" fill="url(#bridgeWater)"/>
-                        <path d="M0 238c120-9 216 4 321-1 116-6 236-8 479 2" fill="none" stroke="#bbdfd1" stroke-opacity=".58" stroke-width="2"/>
-                        <g fill="none" stroke="#a9d8c8" stroke-linecap="round" stroke-opacity=".2">
-                            <path d="M27 268h138m24 0h67m61 0h122m28 0h80m45 0h154" stroke-width="2"/>
-                            <path d="M83 288h80m46 0h119m33 0h88m46 0h69m39 0h137" stroke-width="1.5"/>
-                            <path d="M16 318h112m35 0h78m52 0h128m46 0h83m46 0h145" stroke-width="2"/>
-                            <path d="M198 248h110m218 0h110" stroke-width="3"/>
-                        </g>
-                        <g fill="none" stroke="#bce9d9" stroke-opacity=".82" stroke-width="1.7">
-                            <path d="M300 55 142 201M300 55 172 201M300 55 202 201M300 55 232 201M300 55 262 201"/>
-                            <path d="M300 55 340 201M300 55 370 201M300 55 400 201M300 55 430 201M300 55 460 201"/>
-                            <path d="M510 68 358 201M510 68 388 201M510 68 418 201M510 68 448 201M510 68 478 201"/>
-                            <path d="M510 68 548 201M510 68 578 201M510 68 608 201M510 68 638 201M510 68 668 201"/>
-                        </g>
-                        <g fill="none" stroke="#e6f4df" stroke-linecap="round">
-                            <path d="M286 210V59h28v151" stroke-width="8"/>
-                            <path d="M496 210V72h28v138" stroke-width="8"/>
-                            <path d="M298 72h4m206 14h4" stroke-width="3"/>
-                        </g>
-                        <path d="M20 207h760v13H20z" fill="url(#bridgeDeck)"/>
-                        <path d="M20 205h760" stroke="#f4ffed" stroke-width="2"/>
-                        <path d="M20 222h760" stroke="#b1d5ca" stroke-width="3"/>
-                        <g fill="#e5f4e3">
-                            <path d="M104 198h43l10 7h-62z" opacity=".92"/>
-                            <path d="M591 198h43l10 7h-62z" opacity=".72"/>
-                        </g>
-                        <g fill="#173c4a">
-                            <circle cx="116" cy="206" r="2.5"/><circle cx="140" cy="206" r="2.5"/>
-                            <circle cx="603" cy="206" r="2.5"/><circle cx="627" cy="206" r="2.5"/>
-                        </g>
-                        <path d="M286 221v25m28-25v20m182-20v20m28-20v25" stroke="#9bc9bd" stroke-opacity=".55" stroke-width="3"/>
-                        <g font-family="Arial, sans-serif" font-size="9" font-weight="700" letter-spacing="1.2" fill="#e6f4df" fill-opacity=".82">
-                            <text x="298" y="46" text-anchor="middle">P1</text>
-                            <text x="510" y="59" text-anchor="middle">P2</text>
-                            <text x="400" y="194" text-anchor="middle">MAIN SPAN</text>
+                        <path d="M30 281h700v18H30z" fill="#edf5e6"/>
+                        <path d="M30 305h700" stroke="#f4ffed" stroke-opacity=".7" stroke-width="3"/>
+                        <path d="M0 319h760v161H0z" fill="url(#homeRiver)"/>
+                        <path d="M0 322c135-12 230 8 372 0s246-9 388 1" fill="none" stroke="#d4eee0" stroke-opacity=".55" stroke-width="2"/>
+                        <g fill="none" stroke="#b5ded0" stroke-linecap="round" stroke-opacity=".27">
+                            <path d="M48 358h130m55 0h83m88 0h130m43 0h133" stroke-width="3"/>
+                            <path d="M15 394h97m61 0h156m40 0h102m69 0h91m38 0h75" stroke-width="2"/>
+                            <path d="M103 438h138m55 0h181m53 0h127" stroke-width="2"/>
                         </g>
                     </svg>
-                    <span class="image-caption"><span class="status-dot"></span> CABLE-STAYED / SPAN STUDY</span>
+                    <div class="home-visual-caption">
+                        <span>01</span>
+                        <div><strong>CABLE-STAYED FLYOVER</strong><small>Preliminary study workspace</small></div>
+                    </div>
                 </div>
             </section>
 
-            <div class="workspace-grid section-block" id="calculator">
-                <section class="panel calculator-panel" aria-labelledby="calculatorHeading">
-                    <div class="panel-heading">
-                        <div>
-                            <p class="section-kicker">PRELIMINARY DESIGN CHECKS</p>
-                            <h2 id="calculatorHeading">Run a calculation</h2>
-                        </div>
-                        <span class="step-badge">7 <span>FORMULAS</span></span>
+            <section class="home-tools" aria-labelledby="toolsHeading">
+                <div class="home-section-heading">
+                    <div>
+                        <p class="section-kicker">YOUR WORKSPACE</p>
+                        <h2 id="toolsHeading">Pick up where you need to be</h2>
                     </div>
+                    <span class="home-section-note">A simple flow from inputs to saved results</span>
+                </div>
+                <div class="home-tool-grid">
+                    <a class="home-tool-card" href="calculator.html">
+                        <span class="tool-card-icon" aria-hidden="true">ƒx</span>
+                        <span class="tool-card-content">
+                            <span class="tool-card-kicker">01 / CALCULATE</span>
+                            <strong>Formula calculator</strong>
+                            <span>Choose from seven grouped structural formulas and get clear, unit-labelled results.</span>
+                        </span>
+                        <span class="tool-card-arrow" aria-hidden="true">↗</span>
+                    </a>
+                    <a class="home-tool-card" href="history.html">
+                        <span class="tool-card-icon history-tool-icon" aria-hidden="true">↗</span>
+                        <span class="tool-card-content">
+                            <span class="tool-card-kicker">02 / REVIEW &amp; EXPORT</span>
+                            <strong>Calculation history</strong>
+                            <span>Search your saved work, check the inputs, and export the complete log as CSV.</span>
+                        </span>
+                        <span class="tool-card-arrow" aria-hidden="true">↗</span>
+                    </a>
+                </div>
+            </section>
 
-                    <div class="field-group">
-                        <label for="formulaSelect">Choose a formula</label>
-                        <div class="select-wrap">
-                            <select id="formulaSelect">
-                                <option value="">Select a calculation</option>
-                                <option value="wind">Wind load</option>
-                                <option value="cable">Cable tension</option>
-                                <option value="bending">Bending moment</option>
-                                <option value="shear">Shear force</option>
-                                <option value="stress">Normal stress</option>
-                                <option value="deadload">Dead load</option>
-                                <option value="deflection">Beam deflection</option>
-                            </select>
-                            <span class="select-chevron" aria-hidden="true">⌄</span>
-                        </div>
+            <section class="formula-overview" aria-labelledby="formulaOverviewHeading">
+                <div class="home-section-heading compact-heading">
+                    <div>
+                        <p class="section-kicker">AVAILABLE CHECKS</p>
+                        <h2 id="formulaOverviewHeading">Seven formulas, clearly grouped</h2>
                     </div>
-
-                    <div class="formula-card" id="formulaText" aria-live="polite">
-                        <span class="formula-icon" aria-hidden="true">ƒx</span>
-                        <div>
-                            <p class="formula-title">Your formula will appear here</p>
-                            <p class="formula-equation">Choose a calculation to get started</p>
-                        </div>
-                    </div>
-
-                    <form id="calculationForm" novalidate>
-                        <div id="inputArea" class="input-grid"></div>
-                        <p class="form-message" id="formMessage" role="alert" hidden></p>
-                        <div class="form-actions">
-                            <button class="button button-primary" type="submit">
-                                Calculate <span aria-hidden="true">↗</span>
-                            </button>
-                            <button class="button button-secondary" id="resetButton" type="button">Reset fields</button>
-                        </div>
-                    </form>
-
-                    <section class="result-card" id="result" aria-live="polite" aria-label="Calculation result" hidden>
-                        <div class="result-topline">
-                            <span class="result-label">YOUR RESULT</span>
-                            <button class="copy-button" id="copyButton" type="button">Copy result</button>
-                        </div>
-                        <p class="result-name" id="resultName"></p>
-                        <p class="result-value"><span id="resultValue"></span> <span class="result-unit" id="resultUnit"></span></p>
-                        <p class="result-detail" id="resultDetail"></p>
-                    </section>
-                </section>
-
-                <aside class="panel history-panel" id="history" aria-labelledby="historyHeading">
-                    <div class="panel-heading">
-                        <div>
-                            <p class="section-kicker">CALCULATION LOG</p>
-                            <h2 id="historyHeading">Recent results</h2>
-                        </div>
-                        <span class="history-count" id="historyCount">0</span>
-                    </div>
-                    <p class="history-description">Your latest calculations are saved on this device. Export the complete saved log as a CSV spreadsheet.</p>
-                    <div class="history-actions">
-                        <button class="button button-secondary export-calculations-button" id="exportCalculationsButton" type="button">Export calculations (.csv)</button>
-                        <button class="clear-history" id="clearHistoryButton" type="button" hidden>Clear history</button>
-                    </div>
-                    <p class="history-message" id="historyMessage" role="status" aria-live="polite"></p>
-                    <div class="history-list" id="historyList" aria-live="polite"></div>
-                    <div class="history-empty" id="historyEmpty">
-                        <span class="empty-icon" aria-hidden="true">↗</span>
-                        <p>No calculations yet</p>
-                        <span>Complete a calculation to start your log.</span>
-                    </div>
-                </aside>
-            </div>
+                    <a class="text-link" href="calculator.html">Browse formulas <span aria-hidden="true">→</span></a>
+                </div>
+                <div class="formula-category-grid">
+                    <article class="formula-category-card">
+                        <span class="category-index">01</span>
+                        <h3>Loads</h3>
+                        <p>Wind pressure and structural dead load.</p>
+                    </article>
+                    <article class="formula-category-card">
+                        <span class="category-index">02</span>
+                        <h3>Member response</h3>
+                        <p>Cable force, bending moment, and shear.</p>
+                    </article>
+                    <article class="formula-category-card">
+                        <span class="category-index">03</span>
+                        <h3>Section checks</h3>
+                        <p>Average normal stress and beam deflection.</p>
+                    </article>
+                </div>
+            </section>
         </main>
 
         <footer class="footer">
@@ -200,6 +173,6 @@
             <span>For learning and preliminary checks only — verify designs with applicable codes and a qualified engineer.</span>
         </footer>
     </div>
-    <script src="script.js"></script>
+    <script src="site.js"></script>
 </body>
 </html>

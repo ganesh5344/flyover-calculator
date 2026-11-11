@@ -1,107 +1,6 @@
-const formulas = {
-    wind: {
-        name: "Wind load",
-        equation: "P = 0.6 × V²",
-        note: "Approximate pressure based on wind speed.",
-        output: "Wind pressure",
-        unit: "N/m²",
-        precision: 2,
-        inputs: [
-            { id: "windSpeed", label: "Wind speed (V)", unit: "m/s" }
-        ],
-        calculate: ({ windSpeed }) => 0.6 * windSpeed ** 2
-    },
-    cable: {
-        name: "Cable tension",
-        equation: "H = (w × L²) / (8 × d)",
-        note: "Uses a parabolic cable approximation under uniform load.",
-        output: "Horizontal cable force",
-        unit: "kN",
-        precision: 2,
-        positive: ["sag"],
-        inputs: [
-            { id: "load", label: "Uniform load (w)", unit: "kN/m" },
-            { id: "span", label: "Span length (L)", unit: "m" },
-            { id: "sag", label: "Sag depth (d)", unit: "m" }
-        ],
-        calculate: ({ load, span, sag }) => (load * span ** 2) / (8 * sag)
-    },
-    bending: {
-        name: "Bending moment",
-        equation: "M = (w × L²) / 8",
-        note: "Simply supported beam with a uniformly distributed load.",
-        output: "Maximum bending moment",
-        unit: "kN·m",
-        precision: 2,
-        inputs: [
-            { id: "load", label: "Uniform load (w)", unit: "kN/m" },
-            { id: "span", label: "Span length (L)", unit: "m" }
-        ],
-        calculate: ({ load, span }) => (load * span ** 2) / 8
-    },
-    shear: {
-        name: "Shear force",
-        equation: "V = (w × L) / 2",
-        note: "Support reaction for a simply supported beam under uniform load.",
-        output: "Maximum shear force",
-        unit: "kN",
-        precision: 2,
-        inputs: [
-            { id: "load", label: "Uniform load (w)", unit: "kN/m" },
-            { id: "span", label: "Span length (L)", unit: "m" }
-        ],
-        calculate: ({ load, span }) => (load * span) / 2
-    },
-    stress: {
-        name: "Normal stress",
-        equation: "σ = P / A",
-        note: "Average normal stress over a uniform cross-sectional area.",
-        output: "Normal stress",
-        unit: "kN/m²",
-        precision: 2,
-        positive: ["area"],
-        inputs: [
-            { id: "force", label: "Axial load (P)", unit: "kN" },
-            { id: "area", label: "Cross-sectional area (A)", unit: "m²" }
-        ],
-        calculate: ({ force, area }) => force / area
-    },
-    deadload: {
-        name: "Dead load",
-        equation: "DL = γ × V",
-        note: "Self-weight calculated from unit weight and volume.",
-        output: "Dead load",
-        unit: "kN",
-        precision: 2,
-        inputs: [
-            { id: "unitWeight", label: "Unit weight (γ)", unit: "kN/m³" },
-            { id: "volume", label: "Volume (V)", unit: "m³" }
-        ],
-        calculate: ({ unitWeight, volume }) => unitWeight * volume
-    },
-    deflection: {
-        name: "Beam deflection",
-        equation: "δ = (5 × w × L⁴) / (384 × E × I)",
-        note: "Simply supported beam with a uniformly distributed load.",
-        output: "Maximum deflection",
-        unit: "m",
-        precision: 5,
-        positive: ["elasticity", "inertia"],
-        inputs: [
-            { id: "load", label: "Uniform load (w)", unit: "kN/m" },
-            { id: "span", label: "Span length (L)", unit: "m" },
-            { id: "elasticity", label: "Young's modulus (E)", unit: "kN/m²" },
-            { id: "inertia", label: "Second moment of area (I)", unit: "m⁴" }
-        ],
-        calculate: ({ load, span, elasticity, inertia }) =>
-            (5 * load * span ** 4) / (384 * elasticity * inertia)
-    }
-};
-
+(() => {
+const formulas = window.FlyoverFormulas;
 const historyStorageKey = "spanlab-calculation-history";
-const themeStorageKey = "spanlab-theme";
-const maxHistoryItems = 8;
-
 const formulaSelect = document.getElementById("formulaSelect");
 const inputArea = document.getElementById("inputArea");
 const formulaText = document.getElementById("formulaText");
@@ -112,15 +11,6 @@ const resultName = document.getElementById("resultName");
 const resultValue = document.getElementById("resultValue");
 const resultUnit = document.getElementById("resultUnit");
 const resultDetail = document.getElementById("resultDetail");
-const historyList = document.getElementById("historyList");
-const historyEmpty = document.getElementById("historyEmpty");
-const historyCount = document.getElementById("historyCount");
-const historyMessage = document.getElementById("historyMessage");
-const exportCalculationsButton = document.getElementById("exportCalculationsButton");
-const clearHistoryButton = document.getElementById("clearHistoryButton");
-const themeToggle = document.getElementById("themeToggle");
-const themeLabel = document.getElementById("themeLabel");
-
 let historyItems = loadHistory();
 let latestResult = "";
 
@@ -134,8 +24,8 @@ function showFormula() {
         formulaText.innerHTML = `
             <span class="formula-icon" aria-hidden="true">ƒx</span>
             <div>
-                <p class="formula-title">Your formula will appear here</p>
-                <p class="formula-equation">Choose a calculation to get started</p>
+                <p class="formula-title">Select a formula to see its assumptions</p>
+                <p class="formula-equation">Your formula appears here</p>
             </div>`;
         return;
     }
@@ -234,8 +124,13 @@ function calculate(event) {
             unit: field.unit
         }))
     });
-    saveHistory();
-    renderHistory();
+
+    try {
+        localStorage.setItem(historyStorageKey, JSON.stringify(historyItems));
+    } catch (error) {
+        console.error("Calculation history could not be saved.", error);
+        showMessage("Calculation completed, but its result could not be saved in this browser.");
+    }
 }
 
 function formatNumber(value, precision) {
@@ -256,123 +151,15 @@ function loadHistory() {
     try {
         const saved = localStorage.getItem(historyStorageKey);
         const parsed = saved ? JSON.parse(saved) : [];
-        return Array.isArray(parsed) ? parsed : [];
+        return Array.isArray(parsed) ? parsed.filter((item) => item && formulas[item.formulaId]) : [];
     } catch (error) {
         console.warn("Calculation history could not be loaded.", error);
         return [];
     }
 }
 
-function saveHistory() {
-    try {
-        localStorage.setItem(historyStorageKey, JSON.stringify(historyItems));
-    } catch (error) {
-        console.warn("Calculation history could not be saved.", error);
-        showMessage("Calculation completed, but this browser could not save your history.");
-    }
-}
-
-function renderHistory() {
-    historyList.replaceChildren();
-    historyItems.slice(0, maxHistoryItems).forEach((item) => {
-        const formula = formulas[item.formulaId];
-        if (!formula) {
-            return;
-        }
-
-        const entry = document.createElement("article");
-        entry.className = "history-item";
-
-        const meta = document.createElement("div");
-        meta.className = "history-meta";
-
-        const title = document.createElement("span");
-        title.textContent = formula.name;
-
-        const date = document.createElement("time");
-        date.dateTime = item.timestamp;
-        const parsedDate = new Date(item.timestamp);
-        date.textContent = Number.isNaN(parsedDate.getTime())
-            ? ""
-            : parsedDate.toLocaleString([], { dateStyle: "medium", timeStyle: "short" });
-
-        const value = document.createElement("p");
-        value.className = "history-value";
-        value.textContent = `${item.value} ${item.unit}`;
-
-        meta.append(title, date);
-        entry.append(meta, value);
-        historyList.append(entry);
-    });
-
-    historyCount.textContent = String(historyItems.length);
-    historyEmpty.hidden = historyItems.length > 0;
-    clearHistoryButton.hidden = historyItems.length === 0;
-    historyMessage.textContent = "";
-}
-
-function csvCell(value) {
-    const text = value === null || value === undefined ? "" : String(value);
-    return `"${text.replace(/"/g, '""')}"`;
-}
-
-function exportCalculations() {
-    const records = historyItems.filter((item) => item && formulas[item.formulaId]);
-    if (records.length === 0) {
-        historyMessage.textContent = "No calculations to export yet. Complete a calculation first.";
-        return;
-    }
-
-    const rows = [
-        ["Calculated at", "Calculation", "Formula", "Inputs", "Result", "Unit"],
-        ...records.map((item) => {
-            const formula = formulas[item.formulaId];
-            const inputs = Array.isArray(item.inputs)
-                ? item.inputs.map((input) => `${input.label}: ${input.value} ${input.unit}`).join("; ")
-                : "";
-            return [
-                item.timestamp,
-                item.output || formula.output,
-                formula.equation,
-                inputs,
-                item.value,
-                item.unit
-            ];
-        })
-    ];
-    const csv = `\uFEFF${rows.map((row) => row.map(csvCell).join(",")).join("\r\n")}`;
-    const filename = `flyover-calculations-${new Date().toISOString().slice(0, 10)}.csv`;
-
-    const file = new Blob([csv], { type: "text/csv;charset=utf-8" });
-    const downloadUrl = URL.createObjectURL(file);
-    const link = document.createElement("a");
-    link.href = downloadUrl;
-    link.download = filename;
-    link.hidden = true;
-    document.body.append(link);
-
-    try {
-        link.click();
-        historyMessage.textContent = `CSV download started: ${filename}`;
-    } catch (error) {
-        console.error("Calculation export failed.", error);
-        historyMessage.textContent = "Could not start the CSV download. Check browser download permissions and try again.";
-    } finally {
-        link.remove();
-        window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 60000);
-    }
-}
-
-function applyTheme(theme) {
-    document.documentElement.dataset.theme = theme;
-    const dark = theme === "dark";
-    themeLabel.textContent = dark ? "Light mode" : "Dark mode";
-    themeToggle.setAttribute("aria-label", dark ? "Switch to light theme" : "Switch to dark theme");
-}
-
 document.getElementById("calculationForm").addEventListener("submit", calculate);
 formulaSelect.addEventListener("change", showFormula);
-exportCalculationsButton.addEventListener("click", exportCalculations);
 
 document.getElementById("resetButton").addEventListener("click", () => {
     calculationForm.reset();
@@ -401,32 +188,4 @@ document.getElementById("copyButton").addEventListener("click", async () => {
         showMessage("The result could not be copied. Please select and copy it instead.");
     }
 });
-
-clearHistoryButton.addEventListener("click", () => {
-    historyItems = [];
-    try {
-        localStorage.removeItem(historyStorageKey);
-    } catch (error) {
-        console.warn("Saved calculation history could not be cleared.", error);
-        showMessage("History could not be cleared from this browser.");
-    }
-    renderHistory();
-});
-
-themeToggle.addEventListener("click", () => {
-    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-    applyTheme(nextTheme);
-    try {
-        localStorage.setItem(themeStorageKey, nextTheme);
-    } catch (error) {
-        console.warn("The selected theme could not be saved.", error);
-    }
-});
-
-try {
-    applyTheme(localStorage.getItem(themeStorageKey) === "dark" ? "dark" : "light");
-} catch (error) {
-    console.warn("The saved theme could not be loaded.", error);
-    applyTheme("light");
-}
-renderHistory();
+})();
