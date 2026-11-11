@@ -734,3 +734,440 @@ select:focus,
         transition-duration: 0.01ms !important;
     }
 }
+
+.topbar {
+    height: auto;
+    min-height: 82px;
+    gap: 20px;
+}
+
+.primary-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 23px;
+    margin-left: auto;
+}
+
+.primary-nav a {
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: color 150ms ease;
+}
+
+.primary-nav a:hover {
+    color: var(--accent);
+}
+
+.section-block {
+    scroll-margin-top: 20px;
+}
+
+.project-overview {
+    margin: 0 0 19px;
+}
+
+.section-title-row {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 15px;
+}
+
+.section-title-row h2 {
+    margin: 5px 0 0;
+    font-size: 22px;
+    font-weight: 700;
+    letter-spacing: -0.65px;
+}
+
+.overview-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.overview-actions .button {
+    min-height: 36px;
+    padding: 0 12px;
+    font-size: 11px;
+}
+
+.summary-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 11px;
+}
+
+.summary-card {
+    min-width: 0;
+    border: 1px solid var(--line);
+    border-radius: 11px;
+    background: var(--surface);
+    padding: 15px 16px;
+    box-shadow: var(--shadow);
+}
+
+.summary-label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.summary-card strong {
+    display: block;
+    overflow: hidden;
+    color: var(--text);
+    font-family: "Manrope", sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.project-workgrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
+    align-items: start;
+    gap: 19px;
+    margin-bottom: 20px;
+}
+
+.project-setup-panel,
+.checklist-panel {
+    padding: 25px 27px 26px;
+    scroll-margin-top: 20px;
+}
+
+.project-setup-panel .panel-heading,
+.checklist-panel .panel-heading {
+    margin-bottom: 10px;
+}
+
+.panel-intro {
+    margin: 0 0 19px;
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+}
+
+.project-fields {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 13px;
+}
+
+.project-fields .field-group {
+    margin-bottom: 13px;
+}
+
+.text-input {
+    width: 100%;
+    min-height: 43px;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--surface);
+    color: var(--text);
+    padding: 10px 12px;
+    font-size: 12px;
+    transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.text-input:focus,
+.project-notes:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 13%, transparent);
+    outline: 0;
+}
+
+.text-input::placeholder {
+    color: #aab5bf;
+}
+
+.project-notes-field {
+    grid-column: 1 / -1;
+}
+
+.project-notes {
+    min-height: 83px;
+    resize: vertical;
+}
+
+.project-form-footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.project-form-footer .button {
+    min-height: 39px;
+    white-space: nowrap;
+}
+
+.project-message {
+    margin: 0;
+    color: var(--accent);
+    font-size: 10px;
+}
+
+.project-message[data-error="true"] {
+    color: var(--danger);
+}
+
+.progress-summary {
+    margin: 2px 0 15px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    background: var(--surface-soft);
+    padding: 12px 13px;
+}
+
+.progress-copy {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 9px;
+    color: var(--muted);
+    font-size: 10px;
+}
+
+.progress-copy strong {
+    color: var(--accent);
+    font-size: 10px;
+}
+
+.progress-track {
+    height: 6px;
+    overflow: hidden;
+    border-radius: 999px;
+    background: var(--line);
+}
+
+.progress-track span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: inherit;
+    background: var(--accent);
+    transition: width 180ms ease;
+}
+
+.checklist-items {
+    display: grid;
+}
+
+.checklist-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    min-height: 56px;
+    border-bottom: 1px solid var(--line);
+    cursor: pointer;
+}
+
+.checklist-item:last-child {
+    border-bottom: 0;
+}
+
+.checklist-item input {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    opacity: 0;
+    cursor: pointer;
+}
+
+.checkmark {
+    display: grid;
+    flex: 0 0 19px;
+    width: 19px;
+    height: 19px;
+    place-items: center;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    background: var(--surface);
+    color: transparent;
+    font-size: 12px;
+    transition: background 150ms ease, border-color 150ms ease;
+}
+
+.checklist-item input:checked + .checkmark {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+}
+
+.checklist-item input:checked + .checkmark::after {
+    content: "✓";
+}
+
+.checklist-item input:focus-visible + .checkmark {
+    outline: 3px solid color-mix(in srgb, var(--accent) 38%, transparent);
+    outline-offset: 3px;
+}
+
+.checklist-item strong,
+.checklist-item small {
+    display: block;
+}
+
+.checklist-item strong {
+    color: var(--text);
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.checklist-item small {
+    margin-top: 3px;
+    color: var(--muted);
+    font-size: 9px;
+}
+
+.checklist-item input:checked ~ span:last-child strong {
+    color: var(--muted);
+    text-decoration: line-through;
+}
+
+#calculator {
+    scroll-margin-top: 20px;
+}
+
+@media (max-width: 900px) {
+    .topbar {
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 15px 0;
+    }
+
+    .primary-nav {
+        order: 3;
+        flex-basis: 100%;
+        justify-content: flex-start;
+        gap: 21px;
+        overflow-x: auto;
+        padding: 4px 0;
+    }
+
+    .summary-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .project-workgrid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+}
+
+@media (max-width: 520px) {
+    .topbar {
+        min-height: 0;
+        padding: 13px 0 9px;
+    }
+
+    .primary-nav {
+        gap: 19px;
+    }
+
+    .primary-nav a {
+        flex: 0 0 auto;
+        font-size: 11px;
+    }
+
+    .section-title-row {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .overview-actions {
+        width: 100%;
+    }
+
+    .overview-actions .button {
+        flex: 1;
+    }
+
+    .summary-card {
+        padding: 13px 12px;
+    }
+
+    .summary-card strong {
+        font-size: 12px;
+    }
+
+    .project-setup-panel,
+    .checklist-panel {
+        padding: 21px 17px;
+    }
+
+    .project-fields {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .project-notes-field {
+        grid-column: auto;
+    }
+
+    .project-form-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+@media print {
+    :root,
+    :root[data-theme="dark"] {
+        color-scheme: light;
+        --page: #fff;
+        --surface: #fff;
+        --surface-soft: #f7f9fc;
+        --text: #192b3c;
+        --muted: #596a78;
+        --line: #d7dfe6;
+        --accent: #136b58;
+    }
+
+    .app-shell {
+        width: 100%;
+    }
+
+    .topbar,
+    .hero-image-wrap,
+    .overview-actions,
+    .project-form-footer,
+    .calculator-panel,
+    .history-panel,
+    .footer {
+        display: none !important;
+    }
+
+    .intro {
+        display: block;
+        padding: 0 0 18px;
+    }
+
+    .intro-copy .eyebrow {
+        color: #136b58;
+    }
+
+    .project-overview,
+    .project-workgrid {
+        margin: 0 0 14px;
+    }
+
+    .panel,
+    .summary-card {
+        box-shadow: none;
+        break-inside: avoid;
+    }
+
+    .project-workgrid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
