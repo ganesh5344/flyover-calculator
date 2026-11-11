@@ -307,7 +307,6 @@ function renderHistory() {
 
     historyCount.textContent = String(historyItems.length);
     historyEmpty.hidden = historyItems.length > 0;
-    exportCalculationsButton.disabled = historyItems.length === 0;
     clearHistoryButton.hidden = historyItems.length === 0;
     historyMessage.textContent = "";
 }
@@ -320,7 +319,7 @@ function csvCell(value) {
 function exportCalculations() {
     const records = historyItems.filter((item) => item && formulas[item.formulaId]);
     if (records.length === 0) {
-        historyMessage.textContent = "Complete a calculation before exporting.";
+        historyMessage.textContent = "No calculations to export yet. Complete a calculation first.";
         return;
     }
 
@@ -344,20 +343,23 @@ function exportCalculations() {
     const csv = `\uFEFF${rows.map((row) => row.map(csvCell).join(",")).join("\r\n")}`;
     const filename = `flyover-calculations-${new Date().toISOString().slice(0, 10)}.csv`;
 
+    const file = new Blob([csv], { type: "text/csv;charset=utf-8" });
+    const downloadUrl = URL.createObjectURL(file);
+    const link = document.createElement("a");
+    link.href = downloadUrl;
+    link.download = filename;
+    link.hidden = true;
+    document.body.append(link);
+
     try {
-        const file = new Blob([csv], { type: "text/csv;charset=utf-8" });
-        const downloadUrl = URL.createObjectURL(file);
-        const link = document.createElement("a");
-        link.href = downloadUrl;
-        link.download = filename;
-        document.body.append(link);
         link.click();
-        link.remove();
-        window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 1000);
-        historyMessage.textContent = `Exported ${records.length} calculation${records.length === 1 ? "" : "s"} to CSV.`;
+        historyMessage.textContent = `CSV download started: ${filename}`;
     } catch (error) {
         console.error("Calculation export failed.", error);
-        historyMessage.textContent = "Could not export calculations. Try a different browser.";
+        historyMessage.textContent = "Could not start the CSV download. Check browser download permissions and try again.";
+    } finally {
+        link.remove();
+        window.setTimeout(() => URL.revokeObjectURL(downloadUrl), 60000);
     }
 }
 

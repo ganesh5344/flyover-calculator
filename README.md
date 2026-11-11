@@ -26,7 +26,7 @@ Enter values using the units shown beside each field. The formulas are simplifie
 - Dead load: `DL = γ × volume`.
 - Beam deflection: `δ = 5wL⁴ / (384EI)`, for a simply supported beam with uniform load.
 
-Calculation history is stored in the current browser's local storage and is not synchronized to GitHub or another device. Export the CSV to keep or share a copy.
+Calculation history is stored in the current browser's local storage and is not synchronized to GitHub or another device. Use **Export calculations (.csv)** to download a spreadsheet containing the calculation timestamp, formula, inputs, units, and result. If the history is empty, the export button explains that a calculation is needed first.
 
 ## Safety note
 
